@@ -1,0 +1,87 @@
+@import '../../node_modules/@plake492/css_utilities/src/base-vars';
+@import '../../node_modules/@plake492/css_utilities/src/base-maps';
+@import '../../node_modules/@plake492/css_utilities/src/post-vars';
+
+.background {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.img-carousel {
+  .img-wrapper {
+    width: clamp(250px, 33vw, 400px);
+    height: clamp(250px, 33vw, 400px);
+  }
+}
+
+#cards {
+  background-image: url('../assets/images/backgrounds/blob-scene-haikei.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#waterfall {
+  height: var(--waterfall-height);
+  background-image: url('../assets/images/backgrounds/stacked-peaks.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+$color-base: #9f1eea;
+$color-base-side: #1d4cf7;
+$number-of-falls: 12;
+$fall-slice: calc(100 / $number-of-falls);
+$increment: 2.5;
+
+.falling {
+  position: absolute;
+  width: calc(100vw / $number-of-falls);
+  min-height: calc(var(--waterfall-height));
+  z-index: 3;
+
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+
+  @for $i from 0 to $number-of-falls {
+    &:nth-child(#{$i + 1}) {
+      $col: $i * $increment;
+
+      left: #{calc($i * $fall-slice)} + '%';
+      background-color: darken($color-base, $col);
+    }
+  }
+}
+
+.sideways {
+  position: absolute;
+  height: #{calc(var(--waterfall-height) / $number-of-falls)};
+  width: 100%;
+  z-index: 4;
+
+  @for $i from $number-of-falls + 1 to $number-of-falls * 2 + 1 {
+    &:nth-child(#{$i}) {
+      $col: $i * $increment;
+
+      top: #{calc(($i - $number-of-falls - 1) * $fall-slice)} + '%';
+      background-color: darken($color-base-side, $col);
+    }
+  }
+}
+
+.hero-video {
+  object-fit: cover;
+  // filter: grayscale(0) hue-rotate(0) brightness(0.5);
+  // animation: hue-rotate 30s linear 0s infinite;
+  // animation-direction: normal;
+  // animation-fill-mode: forwards;
+  filter: brightness(2) grayscale(0.6) contrast(2) hue-rotate(360deg);
+}
+
+@keyframes hue-rotate {
+  to {
+    filter: grayscale(1) hue-rotate(360deg) brightness(0.5);
+  }
+}
